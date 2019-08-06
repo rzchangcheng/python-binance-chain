@@ -1,5 +1,5 @@
 =======================================
-Welcome to python-binance-chain v0.1.19
+Welcome to python-binance-chain v0.1.20
 =======================================
 
 .. image:: https://img.shields.io/pypi/v/python-binance-chain.svg
@@ -89,8 +89,7 @@ If using the production server there is no need to pass the environment variable
     # Alternatively pass no env to get production
     prod_client = HttpApiClient()
 
-    # connect client to different URL
-    client = HttpApiClient(api_url='https://yournet.com')
+    # connect client to different URL using custom environments, see below
 
     # get node time
     time = client.get_time()
@@ -417,6 +416,28 @@ General case
         memo='Thanks for the beer'
     )
     res = client.broadcast_msg(transfer_msg, sync=True)
+
+**Transfer Multiple Tokens**
+
+.. code:: python
+
+    from binance_chain.http import HttpApiClient
+    from binance_chain.messages import TransferMsg, Transfer
+    from binance_chain.wallet import Wallet
+
+    wallet = Wallet('private_key_string')
+    client = HttpApiClient()
+
+    multi_transfer_msg = TransferMsg(
+        wallet=wallet,
+        transfers=[
+            Transfer(symbol='ETH.B', amount=1),
+            Transfer(symbol='BNB', amount=1),
+        ],
+        to_address='<to address>',
+        memo='Thanks for the beer'
+    )
+    res = client.broadcast_msg(multi_transfer_msg, sync=True)
 
 **Vote for proposal**
 
@@ -1082,7 +1103,7 @@ Other Exchanges
 
 If you use `Binance <https://www.binance.com/?ref=10099792>`_ check out my `python-binance <https://github.com/sammchardy/python-binance>`_ library.
 
-If you use `Kucoin <https://www.kucoin.com/ucenter/signup?rcode=E42cWB>`_ check out my `python-kucoin <https://github.com/sammchardy/python-kucoin>`_ library.
+If you use `Kucoin <https://www.kucoin.com/?rcode=E42cWB>`_ check out my `python-kucoin <https://github.com/sammchardy/python-kucoin>`_ library.
 
 If you use `Allcoin <https://www.allcoin.com/Account/RegisterByPhoneNumber/?InviteCode=MTQ2OTk4MDgwMDEzNDczMQ==>`_ check out my `python-allucoin <https://github.com/sammchardy/python-allcoin>`_ library.
 
