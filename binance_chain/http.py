@@ -726,6 +726,13 @@ class HttpApiClient(BaseApiClient):
         return self._get("block-exchange-fee", data=data)
 
 
+class WrappedAsyncResponse:
+
+    def __init__(self, content: str):
+        self.content = content
+        self.text = content
+
+
 class AsyncHttpApiClient(BaseApiClient):
 
     @classmethod
@@ -761,7 +768,9 @@ class AsyncHttpApiClient(BaseApiClient):
         response.
         """
         if not str(response.status).startswith('2'):
-            raise BinanceChainAPIException(response, response.status)
+            t = await response.text()
+            ar = WrappedAsyncResponse(t)
+            raise BinanceChainAPIException(ar, response.status)
         try:
             res = await response.json()
 
